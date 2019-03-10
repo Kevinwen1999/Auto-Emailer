@@ -1,23 +1,51 @@
 import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 
-# s.sendmail(from, to, msg)
-username = "user069152"
+
+# server.sendmail(from, to, msg)
+from_user = "user069152@gmail.com"
 password = "pass069152"
-msg = "Hello, this is a test"
+to_user = from_user
+
+# msg config
+subject = "u fuk"
+
+msg = MIMEMultipart()
+msg['From'] =  from_user
+msg['To'] = to_user
+msg['Subject'] = subject
+
+body = "fag"
+msg.attach(MIMEText(body, 'plain'))
+
+# Attachments
+filename = 'fucku.txt'
+attachment = open(filename, 'rb')
+
+part = MIMEBase('application', 'octet-stream')
+part.set_payload(attachment.read())
+encoders.encode_base64(part)
+part.add_header('Content-Disposition', "attachment: filename = " + filename)
+msg.attach(part)
+
+email_text = msg.as_string()
 
 # connect to server
-s = smtplib.SMTP(host='smtp.gmail.com', port=587)
+server = smtplib.SMTP(host='smtp.gmail.com', port=587)
 
 # encrypt
-s.starttls()
+server.starttls()
 
 # login
-s.login(username, password)
-
-
+server.login(from_user, password)
 
 # spammer
 counter = 0
 while counter < 50:
-    s.sendmail(username + "@gmail.com", username + "@gmail.com", msg)
+    server.sendmail(from_user, to_user, email_text)
     counter += 1
+
+server.quit()
