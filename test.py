@@ -31,7 +31,20 @@ encoders.encode_base64(part)
 part.add_header('Content-Disposition', "attachment: filename = " + filename)
 msg.attach(part)
 
+
+# Image
+
+img_source = "https://www.macleans.ca/wp-content/uploads/2012/03/canada-goose-e1330966200413.jpg"
+msgText = MIMEText('<img src="%s">' % img_source, 'html')
+msg.attach(msgText)   # Added, and edited the previous line
+
+
 email_text = msg.as_string()
+
+
+
+
+
 
 # connect to server
 server = smtplib.SMTP(host='smtp.gmail.com', port=587)
